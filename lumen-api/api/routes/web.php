@@ -18,8 +18,18 @@ $router->get('/', function () use ($router) {
 });
 
 $router->get('/test', function () {
-    $test = "テスト";
-    $debug = "デバッグ";
-    $testOfDebug = "${debug}の${test}！！！";
-    return $testOfDebug;
+    $test = array(
+        "success" => "true",
+        "item"    => null
+    );
+
+    return $test;
 });
+
+/*
+|--------------------------------------------------------------------------
+| ExampleController
+|--------------------------------------------------------------------------*/
+$router->get('/test/get', 'ExampleController@getTest');
+$router->post('/test/insert', 'ExampleController@insertTest');
+$router->post('/test/delete', 'ExampleController@deleteTest');
