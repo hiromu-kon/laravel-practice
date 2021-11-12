@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use App\Libs\DBAccess;
 
 class ExampleController extends Controller
 {
@@ -12,9 +12,10 @@ class ExampleController extends Controller
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($dBA)
     {
-        //
+
+        
     }
 
     /**
@@ -25,11 +26,18 @@ class ExampleController extends Controller
     public function getTest(Request $request)
     {
 
-        $query    = $request->input('query');
-        $dbAccess = DB::select("
+        $where = "";
+        $bind  = [];
+        // $query = $request->input('query');
+        // if ($query) {
+
+        //     $where = "where name like N'%$query%'";
+        // }
+
+        $dbAccess = execSelect("
             select *
-            from test
-        ");
+            from test"
+        );
 
         $response = array(
             "success" => "true",
@@ -48,7 +56,7 @@ class ExampleController extends Controller
     public function insertTest(Request $request)
     {
 
-        $idCount = DB::select("
+        $idCount = \DB::select("
             select count(*) as Id
             from test
         ");
@@ -81,7 +89,7 @@ class ExampleController extends Controller
     public function deleteTest(Request $request)
     {
 
-        DB::delete("
+        \DB::delete("
             delete from test
             where id = :id
         ", [
