@@ -4,40 +4,61 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Libs\DBAccess;
+use App\Libs\Common;
 
+/**
+ * ExampleController
+ *
+ * Class ExampleController
+ * @package App\Http\Controllers
+ */
 class ExampleController extends Controller
 {
+
     /**
-     * Create a new controller instance.
+     * DBアクセス共通クラス
      *
-     * @return void
+     * @var DBAccess
      */
-    public function __construct($dBA)
+    protected $dba;
+
+    /**
+     * コンストラクタ
+     *
+     * ExampleController constructor
+     * @param \App\Libs\DBAccess $dba
+     */
+    public function __construct(DBAccess $dba)
     {
 
-        
+        $this->dba = $dba;
     }
 
     /**
      * Select文のサンプル
      *
+     * @param Request $request
      * @return array
+     * @throws \Exception
      */
     public function getTest(Request $request)
     {
 
         $where = "";
         $bind  = [];
-        // $query = $request->input('query');
-        // if ($query) {
+        $query = Common::escapeSpecialCharactersForSql($request->input('query'), true);
+        if (!Common::isEmpty($query)) {
 
-        //     $where = "where name like N'%$query%'";
-        // }
+            $where = "where name like N'%$query%'";
+        }
 
-        $dbAccess = execSelect("
+        $a = !Common::isEmpty($query);
+
+        $dbAccess = $this->dba->execSelectWithLog("Example", "
             select *
-            from test"
-        );
+            from test
+            $where
+        ");
 
         $response = array(
             "success" => "true",
@@ -51,32 +72,75 @@ class ExampleController extends Controller
     /**
      * Insert文のサンプル
      *
+     * @param Request $request
      * @return array
+     * @throws \Exception
      */
     public function insertTest(Request $request)
     {
 
-        $idCount = \DB::select("
-            select count(*) as Id
-            from test
-        ");
-
-        $id = $idCount[0]->Id + 1;
-
-        DB::insert("
-            insert into test
-                (id, name)
-            values
-                (:id, :name)
-        ", [
-            "id"   => $id,
-            "name" => $request->input('name')
+        $id         = $request->input('id');
+        $validation = Common::validation($request, [
+            "id"   => "required|max:5",
+            "name" => "required|max:10"
+        ], [
+            "id.required"   => "Idは必須入力です。",
+            "name.required" => "名前は必須入力です。",
+            "id.max"        => "Idは最大50文字です。",
+            "name.max"      => "名前は最大10文字です。"
         ]);
+
+        if (!$validation["success"]) {
+
+            return $validation;
+        }
 
         $response = array(
             "success" => "true",
             "message" => ""
         );
+
+        $count = $this->dba->execSelectWithLog("Example", "
+            select count(1) as count
+            from   test
+            where  id = :id
+        ", [
+            "id" => $id
+        ]);
+
+        if ($count[0]->count > 0) {
+
+            $response["success"] = false;
+            $response["message"] = "登録済みのIdです。";
+
+            return $response;
+        }
+
+        try {
+
+            \DB::beginTransaction();
+
+            $this->dba->execInsert("Example", "
+                insert into test
+                    (id, name)
+                values
+                    (:id, :name)
+            ", [
+                "id"   => $id,
+                "name" => $request->input('name')
+            ]);
+
+            \DB::commit();
+        } catch(\Exception $e) {
+
+            \DB::rollBack();
+
+            $response["success"] = false;
+            $response["message"] = $e->getMessage();
+            \Log::error($e);
+
+            return $response;
+        };
 
         return $response;
     }
@@ -84,18 +148,32 @@ class ExampleController extends Controller
     /**
      * Delete文のサンプル
      *
+     * @param Request $request
      * @return array
+     * @throws \Exception
      */
     public function deleteTest(Request $request)
     {
 
-        \DB::delete("
-            delete from test
-            where id = :id
-        ", [
-            "id" => $request->input('id')
-        ]);
+        $id = $request->input('id');
 
+        try {
+
+            \DB::beginTransaction();
+
+            $this->dba->execDelete("Example", "test where id = $id");
+
+            \DB::commit();
+        } catch(\Exception $e) {
+
+            \DB::rollBack();
+
+            $response["success"] = false;
+            $response["message"] = $e->getMessage();
+            \Log::error($e);
+
+            return $response;
+        }
         $response = array(
             "success" => "true",
             "message" => ""
