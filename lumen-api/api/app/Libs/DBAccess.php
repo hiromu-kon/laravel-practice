@@ -41,7 +41,6 @@ class DBAccess
      * 抽出実行（開始と終了にログ出力）
      *
      * @param $name
-     * @param $con
      * @param $query
      * @param array $binds
      * @return mixed
@@ -62,7 +61,6 @@ class DBAccess
      * 挿入実行
      *
      * @param $name
-     * @param $con
      * @param $query
      * @param $binds
      */
