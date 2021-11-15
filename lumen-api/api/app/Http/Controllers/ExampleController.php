@@ -46,13 +46,17 @@ class ExampleController extends Controller
 
         $where = "";
         $bind  = [];
-        $query = Common::escapeSpecialCharactersForSql($request->input('query'), true);
-        if (!Common::isEmpty($query)) {
+        $searchId = Common::escapeSpecialCharactersForSql($request->input('searchId'), true);
+        $searchName = Common::escapeSpecialCharactersForSql($request->input('searchName'), true);
+        if (!Common::isEmpty($searchId)) {
 
-            $where = "where name like N'%$query%'";
+            $where[] = "where Id like N'%$searchId%'";
         }
 
-        $a = !Common::isEmpty($query);
+        if (!Common::isEmpty($searchName)) {
+
+            $where[] = "where name like N'%$searchName%'";
+        }
 
         $dbAccess = $this->dba->execSelectWithLog("Example", "
             select *
