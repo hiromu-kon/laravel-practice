@@ -44,19 +44,20 @@ class ExampleController extends Controller
     public function getTest(Request $request)
     {
 
-        $where = "";
-        $bind  = [];
+        $wheres   = [];
         $searchId = Common::escapeSpecialCharactersForSql($request->input('searchId'), true);
         $searchName = Common::escapeSpecialCharactersForSql($request->input('searchName'), true);
         if (!Common::isEmpty($searchId)) {
 
-            $where[] = "where Id like N'%$searchId%'";
+            $wheres[] = "id like N'%$searchId%'";
         }
 
         if (!Common::isEmpty($searchName)) {
 
-            $where[] = "where name like N'%$searchName%'";
+            $wheres[] = "name like N'%$searchName%'";
         }
+
+        $where = count($wheres) > 0 ? "where " . implode(" and ", $wheres) : "";
 
         $dbAccess = $this->dba->execSelectWithLog("Example", "
             select *
