@@ -133,6 +133,37 @@ class DBAccess
     }
 
     /**
+     * 更新実行
+     *
+     * @param $name
+     * @param $query
+     * @param $binds
+     */
+    public function execUpdate($name, $query, $binds = [])
+    {
+        $outputLog = !Common::isEmpty($name);
+
+        if ($outputLog) {
+
+            $this->logInfo($name . "更新開始");
+        }
+
+        $updated = [];
+
+        // if ($outputLog) {
+
+        //     $deleted = $this->execSelect("select * from $query", $binds);
+        // }
+
+        \DB::update("update $query", $binds);
+
+        if ($outputLog) {
+
+            $this->logInfo($name . "更新完了", ["対象" => $updated, "バインド" => $binds]);
+        }
+    }
+
+    /**
      * テーブルのカラム型を取得する
      *
      * @param string $tableName

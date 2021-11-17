@@ -91,7 +91,7 @@ class ExampleController extends Controller
         ], [
             "id.required"   => "Idは必須入力です。",
             "name.required" => "名前は必須入力です。",
-            "id.max"        => "Idは最大50文字です。",
+            "id.max"        => "Idは最大5文字です。",
             "name.max"      => "名前は最大10文字です。"
         ]);
 
@@ -179,6 +179,61 @@ class ExampleController extends Controller
 
             return $response;
         }
+
+        $response = array(
+            "success" => "true",
+            "message" => ""
+        );
+
+        return $response;
+    }
+
+     /**
+     * Update文のサンプル
+     *
+     * @param Request $request
+     * @return array
+     * @throws \Exception
+     */
+    public function updateTest(Request $request)
+    {
+
+        $id         = $request->input('id');
+        $name       = $request->input('name');
+        $validation = Common::validation($request, [
+            "id"   => "required|max:5",
+            "name" => "required|max:10"
+        ], [
+            "id.required"   => "Idは必須入力です。",
+            "name.required" => "名前は必須入力です。",
+            "id.max"        => "Idは最大5文字です。",
+            "name.max"      => "名前は最大10文字です。"
+        ]);
+
+        if (!$validation["success"]) {
+
+            return $validation;
+        }
+
+        try {
+
+            \DB::beginTransaction();
+
+            $this->dba->execUpdate("Example", 
+                "test set name = $name where id = $id");
+
+            \DB::commit();
+        } catch(\Exception $e) {
+
+            \DB::rollBack();
+
+            $response["success"] = false;
+            $response["message"] = $e->getMessage();
+            \Log::error($e);
+
+            return $response;
+        }
+
         $response = array(
             "success" => "true",
             "message" => ""
