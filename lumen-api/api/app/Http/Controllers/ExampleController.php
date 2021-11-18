@@ -198,8 +198,6 @@ class ExampleController extends Controller
     public function updateTest(Request $request)
     {
 
-        $id         = $request->input('id');
-        $name       = $request->input('name');
         $validation = Common::validation($request, [
             "id"   => "required|max:5",
             "name" => "required|max:10"
@@ -219,8 +217,14 @@ class ExampleController extends Controller
 
             \DB::beginTransaction();
 
-            $this->dba->execUpdate("Example", 
-                "test set name = $name where id = $id");
+            $this->dba->execUpdate("Example", "
+                update test 
+                set name = :name
+                where id = :id
+            ", [
+                "name" => $request->input('name'),
+                "id"   => $request->input('id')
+            ]);
 
             \DB::commit();
         } catch(\Exception $e) {

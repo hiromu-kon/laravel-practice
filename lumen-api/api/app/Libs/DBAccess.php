@@ -155,7 +155,7 @@ class DBAccess
         //     $deleted = $this->execSelect("select * from $query", $binds);
         // }
 
-        \DB::update("update $query", $binds);
+        \DB::update($query, $binds);
 
         if ($outputLog) {
 
