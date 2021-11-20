@@ -68,6 +68,7 @@ class Common
      */
     public static function escapeSpecialCharactersForSql($param, $isLikePredicate = false)
     {
+
         $searches = array("'");
         $replaces = array("''");
 

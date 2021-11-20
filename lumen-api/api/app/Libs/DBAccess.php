@@ -110,6 +110,7 @@ class DBAccess
      */
     public function getChunkParams($binds, $maxParams = SDApp::SQL_SERVER_MAX_INSERT_VALUES)
     {
+
         $chunkParams = array();
 
         foreach (array_chunk($binds, $maxParams > SDApp::SQL_SERVER_MAX_INSERT_VALUES ? SDApp::SQL_SERVER_MAX_INSERT_VALUES : $maxParams) as $chunkBinds) {
