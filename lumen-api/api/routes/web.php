@@ -17,15 +17,6 @@ $router->get('/', function () use ($router) {
     return $router->app->version();
 });
 
-$router->get('/test', function () {
-    $test = array(
-        "success" => "true",
-        "item"    => null
-    );
-
-    return $test;
-});
-
 /*
 |--------------------------------------------------------------------------
 | ExampleController
