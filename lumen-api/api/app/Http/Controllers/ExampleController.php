@@ -37,7 +37,7 @@ class ExampleController extends Controller
     /**
      * Select文のサンプル
      *
-     * @param Request $request
+     * @param Request $request HTTPリクエスト
      * @return array
      * @throws \Exception
      */
@@ -77,7 +77,7 @@ class ExampleController extends Controller
     /**
      * Insert文のサンプル
      *
-     * @param Request $request
+     * @param Request $request HTTPリクエスト
      * @return array
      * @throws \Exception
      */
@@ -153,7 +153,7 @@ class ExampleController extends Controller
     /**
      * Delete文のサンプル
      *
-     * @param Request $request
+     * @param Request $request HTTPリクエスト
      * @return array
      * @throws \Exception
      */
@@ -191,7 +191,7 @@ class ExampleController extends Controller
      /**
      * Update文のサンプル
      *
-     * @param Request $request
+     * @param Request $request HTTPリクエスト
      * @return array
      * @throws \Exception
      */
