@@ -44,6 +44,10 @@ class ExampleController extends Controller
     public function getTest(Request $request)
     {
 
+        $response = array(
+            "success" => "true",
+            "message" => ""
+        );
         $wheres   = [];
         $searchId = Common::escapeSpecialCharactersForSql($request->input('searchId'), true);
         $searchName = Common::escapeSpecialCharactersForSql($request->input('searchName'), true);
@@ -58,18 +62,11 @@ class ExampleController extends Controller
         }
 
         $where = count($wheres) > 0 ? "where " . implode(" and ", $wheres) : "";
-
-        $dbAccess = $this->dba->execSelectWithLog("Example", "
+        $response["item"] = $dbAccess = $this->dba->execSelectWithLog("Example", "
             select *
             from test
             $where
         ");
-
-        $response = array(
-            "success" => "true",
-            "message" => "",
-            "item"    => $dbAccess
-        );
 
         return $response;
     }
