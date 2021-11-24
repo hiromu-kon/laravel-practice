@@ -44,13 +44,28 @@ class ExampleController extends Controller
     public function getTest(Request $request)
     {
 
+        $validation = Common::validation($request, [
+            "searchId"   => "max:5",
+            "searchName" => "max:10"
+        ], [
+            "searchId.max"   => "Id検索は最大5文字です。",
+            "searchName.max" => "名前検索は最大10文字です。"
+        ]);
+
+        if (!$validation["success"]) {
+
+            return $validation;
+        }
+
         $response = array(
             "success" => "true",
             "message" => ""
         );
-        $wheres   = [];
-        $searchId = Common::escapeSpecialCharactersForSql($request->input('searchId'), true);
+
+        $wheres     = [];
+        $searchId   = Common::escapeSpecialCharactersForSql($request->input('searchId'), true);
         $searchName = Common::escapeSpecialCharactersForSql($request->input('searchName'), true);
+
         if (!Common::isEmpty($searchId)) {
 
             $wheres[] = "id like N'%$searchId%'";
