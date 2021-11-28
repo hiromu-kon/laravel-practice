@@ -101,47 +101,47 @@ class DBAccess
         }
     }
 
-    /**
-     * 分割パラメータ取得
-     *
-     * @param $binds
-     * @param int $maxParams
-     * @return array
-     */
-    public function getChunkParams($binds, $maxParams = SDApp::SQL_SERVER_MAX_INSERT_VALUES)
-    {
+    // /**
+    //  * 分割パラメータ取得
+    //  *
+    //  * @param $binds
+    //  * @param int $maxParams
+    //  * @return array
+    //  */
+    // public function getChunkParams($binds, $maxParams = SDApp::SQL_SERVER_MAX_INSERT_VALUES)
+    // {
 
-        $chunkParams = array();
+    //     $chunkParams = array();
 
-        foreach (array_chunk($binds, $maxParams > SDApp::SQL_SERVER_MAX_INSERT_VALUES ? SDApp::SQL_SERVER_MAX_INSERT_VALUES : $maxParams) as $chunkBinds) {
+    //     foreach (array_chunk($binds, $maxParams > SDApp::SQL_SERVER_MAX_INSERT_VALUES ? SDApp::SQL_SERVER_MAX_INSERT_VALUES : $maxParams) as $chunkBinds) {
 
-            $params = array();
-            $values = array();
+    //         $params = array();
+    //         $values = array();
 
-            foreach ($chunkBinds as $chunkBindIndex => $chunkBind) {
+    //         foreach ($chunkBinds as $chunkBindIndex => $chunkBind) {
 
-                foreach ($chunkBind as $columnName => $value) {
+    //             foreach ($chunkBind as $columnName => $value) {
 
-                    $paramName = $columnName . $chunkBindIndex;
+    //                 $paramName = $columnName . $chunkBindIndex;
 
-                    if (!array_key_exists($columnName, $params)) {
+    //                 if (!array_key_exists($columnName, $params)) {
 
-                        $params[$columnName] = array();
-                    }
+    //                     $params[$columnName] = array();
+    //                 }
 
-                    $params[$columnName][]  = ":$paramName";
-                    $values[$paramName]     = $value;
-                }
-            }
+    //                 $params[$columnName][]  = ":$paramName";
+    //                 $values[$paramName]     = $value;
+    //             }
+    //         }
 
-            $chunkParams[] = array(
-                "params"    => $params,
-                "values"    => $values
-            );
-        }
+    //         $chunkParams[] = array(
+    //             "params"    => $params,
+    //             "values"    => $values
+    //         );
+    //     }
 
-        return $chunkParams;
-    }
+    //     return $chunkParams;
+    // }
 
     /**
      * 削除実行

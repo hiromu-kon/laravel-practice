@@ -117,7 +117,7 @@ class Common
 
         $params = $request->all();
 
-        $validator = \Validator::make($params, $data, $customMessages);
+        $validator = Validator::make($params, $data, $customMessages);
 
         if ($validator->fails()) {
 
