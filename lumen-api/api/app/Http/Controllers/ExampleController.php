@@ -77,7 +77,7 @@ class ExampleController extends Controller
         }
 
         $where = count($wheres) > 0 ? "where " . implode(" and ", $wheres) : "";
-        $response["item"] = $dbAccess = $this->dba->execSelectWithLog("Example", "
+        $response["item"] = $this->dba->execSelectWithLog("Example", "
             select *
             from test
             $where
