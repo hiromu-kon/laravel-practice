@@ -2,8 +2,6 @@
 
 namespace App\Libs;
 
-use Illuminate\Http\Request;
-
 /**
  * 共通クラス
  *
@@ -19,6 +17,11 @@ class Common
      * @var string
      */
     const ESCAPE_CHAR_USED_LIKE_PREDICATE = "!";
+
+    /**
+     * insertできるvalueの最大値
+     */
+    const MAX_INSERT_VALUES = 100;
 
     /**
      * 空かどうか
