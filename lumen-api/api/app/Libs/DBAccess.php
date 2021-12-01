@@ -48,7 +48,8 @@ class DBAccess
     public function execSelectWithLog($name, $query, $binds = [])
     {
 
-        $this->logInfo($name . "抽出開始", ["クエリ" => $query, "バインド" => $binds]);
+        $deleteQueryLine = rtrim(str_replace("\n", "", $query));
+        $this->logInfo($name . "抽出開始", ["クエリ" => $deleteQueryLine, "バインド" => $binds]);
 
         $selected = $this->execSelect($query, $binds);
 
