@@ -236,4 +236,38 @@ class DBAccess
 
         return $typeList;
     }
+
+        /**
+     * テーブルのカラム情報を取得する
+     *
+     * @param string $targetTable
+     * @param string $con
+     * @param array $omits
+     * @return array
+     */
+    public function getColumns($targetTable, $con, $omits = [])
+    {
+
+        $columnList = [];
+        $columns    = \DB::connection($con)->select("
+            select  columns.name as PhysicalName
+            from    sys.columns columns
+            where   exists (
+                      select  *
+                      from  sys.tables tables
+                      where tables.object_id  = columns.object_id
+                      and   tables.name       = '$targetTable'
+                    )
+            " . (count($omits) > 0 ? " and columns.name not in ('" . implode("','", $omits) . "') " : "") . "
+            order by
+                    columns.column_id
+        ");
+
+        foreach ($columns as $column) {
+
+            $columnList[] = SDApp::escapeSqlServerReservedWord($column->PhysicalName);
+        }
+
+        return $columnList;
+    }
 }
