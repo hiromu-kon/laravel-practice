@@ -184,6 +184,7 @@ class DBAccess
      */
     public function execUpdate($name, $query, $binds = [])
     {
+
         $outputLog = !Common::isEmpty($name);
 
         if ($outputLog) {

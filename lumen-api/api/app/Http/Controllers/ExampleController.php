@@ -12,7 +12,7 @@ use App\Libs\Common;
  * Class ExampleController
  * @package App\Http\Controllers
  */
-class ExampleController extends Controller
+class ExampleController extends BaseController
 {
 
     /**
@@ -44,7 +44,7 @@ class ExampleController extends Controller
     public function getTest(Request $request)
     {
 
-        $validation = Common::validation($request, [
+        $validation = parent::validation($request, [
             "searchId"   => "max:5",
             "searchName" => "max:10"
         ], [
