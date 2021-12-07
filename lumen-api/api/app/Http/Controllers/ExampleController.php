@@ -44,7 +44,7 @@ class ExampleController extends BaseController
     public function getTest(Request $request)
     {
 
-        $validation = parent::validation($request, [
+        $validation = $this->validation($request, [
             "searchId"   => "max:5",
             "searchName" => "max:10"
         ], [
