@@ -200,7 +200,7 @@ class ExampleController extends BaseController
         return $response;
     }
 
-     /**
+    /**
      * Update文のサンプル
      *
      * @param Request $request HTTPリクエスト
@@ -254,6 +254,41 @@ class ExampleController extends BaseController
             "success" => "true",
             "message" => ""
         );
+
+        return $response;
+    }
+
+    /**
+     * 詳細のサンプル
+     *
+     * @param $id 
+     * @return array
+     * @throws \Exception
+     */
+    public function show($id)
+    {
+
+        $id   = Common::escapeSpecialCharactersForSql($id, true);
+        $response = array(
+            "success" => "true",
+            "message" => ""
+        );
+
+        $response["item"] = $this->dba->execSelectWithLog("Example", "
+            select *
+            from test
+            where id = :id
+        ", [
+            "id" => $id
+        ]);
+
+        if (count($response["item"]) <= 0) {
+
+            $response = array(
+                "success" => "false",
+                "message" => "指定したIdのデータはありません。"
+            );
+        }
 
         return $response;
     }
