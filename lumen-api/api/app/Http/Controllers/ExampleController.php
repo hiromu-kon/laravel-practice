@@ -265,10 +265,10 @@ class ExampleController extends BaseController
      * @return array
      * @throws \Exception
      */
-    public function show($id)
+    public function show(Request $request)
     {
 
-        $id   = Common::escapeSpecialCharactersForSql($id, true);
+        $id       = Common::escapeSpecialCharactersForSql($request->id, true);
         $response = array(
             "success" => "true",
             "message" => ""
