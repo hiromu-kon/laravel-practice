@@ -292,4 +292,20 @@ class ExampleController extends BaseController
 
         return $response;
     }
+
+    /**
+     * サンプル
+     *
+     * @param $id 
+     * @return array
+     * @throws \Exception
+     */
+    public function test(Request $request)
+    {
+        $referer = request()->server->get("HTTP_REFERER");
+        return array(
+            "success" => "true",
+            "message" => ""
+        );
+    }
 }
