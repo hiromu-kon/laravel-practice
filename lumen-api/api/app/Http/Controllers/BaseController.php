@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Exceptions\HttpResponseException;
+
 /**
  * BaseController
  *
@@ -35,6 +37,15 @@ class BaseController extends Controller
         $params = $request->all();
 
         $validator = \Validator::make($params, $data, $customMessages);
+
+        $data = [
+            'error' => [
+                'code' => 30,
+                'message' => $validator->errors()->toArray()
+            ],
+        ];
+
+        throw new HttpResponseException(response()->json($data, 422));
 
         if ($validator->fails()) {
 

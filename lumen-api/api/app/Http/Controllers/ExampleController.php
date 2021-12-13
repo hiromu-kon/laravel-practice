@@ -97,7 +97,7 @@ class ExampleController extends BaseController
     {
 
         $id         = $request->input('id');
-        $validation = Common::validation($request, [
+        $validation = $this->validation($request, [
             "id"   => "required|max:5",
             "name" => "required|max:10"
         ], [
@@ -296,12 +296,12 @@ class ExampleController extends BaseController
     /**
      * サンプル
      *
-     * @param $id 
      * @return array
      * @throws \Exception
      */
-    public function test(Request $request)
+    public function test()
     {
+
         $referer = request()->server->get("HTTP_REFERER");
         return array(
             "success" => "true",
