@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Traits\JsonRespondController;
 
 use Illuminate\Http\Exceptions\HttpResponseException;
 
@@ -12,6 +13,7 @@ use Illuminate\Http\Exceptions\HttpResponseException;
  */
 class BaseController extends Controller
 {
+    use JsonRespondController;
 
     /**
      * パラメータのバリデーションチェック
