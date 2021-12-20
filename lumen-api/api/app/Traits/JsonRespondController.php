@@ -140,9 +140,10 @@ trait JsonRespondController
      */
     public function respondWithError(?string $message = null): JsonResponse
     {
+
         return $this->respond([
             'error' => [
-                'message' => $message ?? config('api.error_codes.' . $this->getErrorCode()),
+                'message' => config('api.error_codes.' . $this->getErrorCode()),
                 'code' => $this->getErrorCode(),
             ]
         ]);

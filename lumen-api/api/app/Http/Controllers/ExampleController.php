@@ -44,23 +44,23 @@ class ExampleController extends BaseController
     public function getTest(Request $request)
     {
 
-        $validation = $this->validation($request, [
-            "searchId"   => "max:5",
-            "searchName" => "max:10"
-        ], [
-            "searchId.max"   => "Id検索は最大5文字です。",
-            "searchName.max" => "名前検索は最大10文字です。"
-        ]);
+        // $validation = $this->validation($request, [
+        //     "searchId"   => "max:5",
+        //     "searchName" => "max:10"
+        // ], [
+        //     "searchId.max"   => "Id検索は最大5文字です。",
+        //     "searchName.max" => "名前検索は最大10文字です。"
+        // ]);
 
-        if (!$validation["success"]) {
+        // if (!$validation["success"]) {
 
-            return $validation;
-        }
+        //     return $validation;
+        // }
 
-        $response = array(
-            "success" => "true",
-            "message" => ""
-        );
+        // $response = array(
+        //     "success" => "true",
+        //     "message" => ""
+        // );
 
         $wheres     = [];
         $searchId   = Common::escapeSpecialCharactersForSql($request->input('searchId'), true);
@@ -258,40 +258,40 @@ class ExampleController extends BaseController
         return $response;
     }
 
-    /**
-     * 詳細のサンプル
-     *
-     * @param $id 
-     * @return array
-     * @throws \Exception
-     */
-    public function show(Request $request)
-    {
+    // /**
+    //  * 詳細のサンプル
+    //  *
+    //  * @param $id 
+    //  * @return array
+    //  * @throws \Exception
+    //  */
+    // public function show(Request $request)
+    // {
 
-        $id       = Common::escapeSpecialCharactersForSql($request->id, true);
-        $response = array(
-            "success" => "true",
-            "message" => ""
-        );
+    //     $id       = Common::escapeSpecialCharactersForSql($request->id, true);
+    //     $response = array(
+    //         "success" => "true",
+    //         "message" => ""
+    //     );
 
-        $response["item"] = $this->dba->execSelectWithLog("Example", "
-            select *
-            from test
-            where id = :id
-        ", [
-            "id" => $id
-        ]);
+    //     $response["item"] = $this->dba->execSelectWithLog("Example", "
+    //         select *
+    //         from test
+    //         where id = :id
+    //     ", [
+    //         "id" => $id
+    //     ]);
 
-        if (count($response["item"]) <= 0) {
+    //     if (count($response["item"]) <= 0) {
 
-            $response = array(
-                "success" => "false",
-                "message" => "指定したIdのデータはありません。"
-            );
-        }
+    //         $response = array(
+    //             "success" => "false",
+    //             "message" => "指定したIdのデータはありません。"
+    //         );
+    //     }
 
-        return $response;
-    }
+    //     return $response;
+    // }
 
     /**
      * サンプル

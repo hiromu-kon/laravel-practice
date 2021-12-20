@@ -26,6 +26,7 @@ $app = new App\Application(
 $app->withFacades();
 
 // $app->withEloquent();
+$app->configure('api');
 
 /*
 |--------------------------------------------------------------------------

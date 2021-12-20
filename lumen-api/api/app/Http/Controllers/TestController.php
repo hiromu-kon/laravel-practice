@@ -48,10 +48,10 @@ class TestController extends BaseController
             from test
         ");
 
-        return $this->respondNotFound();
+        // return $this->respondNotFound();
 
         // throw new \Exception("エラーだよ");
 
-        // return $response;
+        return $response;
     }
 }

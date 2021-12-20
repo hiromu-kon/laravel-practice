@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Traits\JsonRespondController;
 
 use Illuminate\Http\Exceptions\HttpResponseException;
+use App\Exceptions\ValidationException;
 
 /**
  * BaseController
@@ -13,7 +14,6 @@ use Illuminate\Http\Exceptions\HttpResponseException;
  */
 class BaseController extends Controller
 {
-    use JsonRespondController;
 
     /**
      * パラメータのバリデーションチェック
@@ -30,14 +30,16 @@ class BaseController extends Controller
 
         $validator = \Validator::make($params, $data, $customMessages);
 
-        $data = [
-            'error' => [
-                'code' => 30,
-                'message' => $validator->errors()->toArray()
-            ],
-        ];
+        throw new ValidationException($request, $validator);
 
-        return $data;
+        // $data = [
+        //     'error' => [
+        //         'code' => 30,
+        //         'message' => $validator->errors()->toArray()
+        //     ],
+        // ];
+
+        // return $data;
 
         // throw new HttpResponseException(response()->json($data, 422));
 
