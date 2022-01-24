@@ -29,27 +29,40 @@ export const Login = () => {
   }
 
   const onClickRegister = () => {
-    // const loginParams = { 
-    //   email: 'hiroTest3@gmailcom', 
-    //   password: 'TestUser',
-    //   password_confirmation: 'TestUser',
-    //   name: 'Test'
-    // }
+    const loginParams = { 
+      email: 'hiroTest10@gmailcom', 
+      password: 'TestUser',
+      password_confirmation: 'TestUser',
+      name: 'Test'
+    }
 
-    // axios
-    // .get('http://localhost:8000/sanctum/csrf-cookie', { withCredentials: true })
-    // .then((response) => {
-    //   axios
-    //   .post(
-    //     'http://localhost:8000/api/register',
-    //     loginParams,
-    //     { withCredentials: true }
-    //   )
-    //   .then((response) => {
-    //     console.log(response.data)
-    //     navigate("/user");
-    //   })
-    // })
+    axios
+    .get('http://localhost:8000/sanctum/csrf-cookie', { withCredentials: true })
+    .then((response) => {
+      axios
+      .post(
+        'http://localhost:8000/api/register',
+        loginParams,
+        { withCredentials: true }
+      )
+      .then((response) => {
+        console.log(response.data)
+        navigate("/user");
+      })
+    })
+  }
+
+  const onClickLogout = () => {
+
+      axios
+      .post(
+        'http://localhost:8000/api/logout',
+        { withCredentials: true }
+      )
+      .then((response) => {
+        console.log(response.data)
+      })
+
   }
 
   return (
@@ -60,6 +73,9 @@ export const Login = () => {
       Login<br/>
       <button onClick={onClickRegister}>
         新規登録
+      </button><br/>
+      <button onClick={onClickLogout}>
+        ログアウト
       </button>
     </div>
   )

@@ -1,7 +1,7 @@
 import {  Route, Routes } from "react-router-dom";
-import { Login } from "../components/page/login";
-import { Todos } from "../components/page/todos";
-import { User } from "../components/page/user";
+import { Login } from "../components/page/Login";
+import { Todos } from "../components/page/Todos";
+import { User } from "../components/page/User";
 
 export const Router = () => {
 
